@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="manifest" href="manifest.json">
+    <style>
+        
+        .background-dark{
+            background-color: #4d5963;
+        }
+
+        .control-button {
+            background-color: black;
+            color: white;
+            font-size: 18px;
+            padding: 15px 30px;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            margin: 0 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .time-button {
+            background-color: black;
+            color: white;
+            font-size: 14px;
+            padding: 15px 30px;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            margin: 0 10px;
+            transition: background-color 0.3s ease;
+
+        }
+
+        .time-button-red {
+            background-color: red;
+            color: white;
+            font-size: 14px;
+            padding: 15px 30px;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            margin: 0 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .center {
+            display: flex;
+            justify-content: center;
+        }
+
+        .marginTop100 {
+            margin-top: 100px;
+        }
+
+        .marginTop40 {
+            margin-top: 40px;
+        }
+
+        .marginTop10 {
+            margin-top: 10px;
+        }
+
+        .timer {
+            font-size: 60px;
+            color: white;
+            font-family: 'Roboto', 'sans-serif';
+            margin-bottom: 20px;
+        }
+
+        .menu-bar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 10px;
+            background-color: black;
+            color: white;
+            font-size: 24px;
+            font-family: Arial, sans-serif;
+            margin-bottom: 20px;
+            
+        }
+
+        .menu-item a {
+            color: inherit; 
+            text-decoration: none; 
+            margin-left: 40px;
+        }
+        
+    </style>
+
+    <script>
+        let sound_Single = new Audio('sound.mp3');
+        let sound_Short = new Audio('sound.mp3');
+        let sound_Long = new Audio('sound.mp3');
+        let intervalId;
+        let selectedMin;
+        let formattedTime;
+        let safeRemainingTime;
+
+        function startTimer(min, sound) {
+            let endTime = new Date().getTime() + 1000 * 60 * min;
+            intervalId = setInterval(function() {
+                let now = new Date().getTime();
+                let remainingtime = endTime-now;
+            
+                if(remainingtime<=0) {
+                    clearInterval(intervalId);
+                    sound.play();
+                    return;
+                }
+
+                let minRemaining = Math.floor(remainingtime / (1000 * 60));
+                let secRemaining = Math.floor((remainingtime % (1000 * 60)) / 1000);
+
+                safeRemainingTime = minRemaining + secRemaining/60
+                // Formatieren die verbleibende Zeit in ein MM:SS-Format
+                formattedTime = ('0' + minRemaining).slice(-2) + ':' + ('0' + secRemaining).slice(-2);
+                
+                // Aktualisiere das Timer-Element mit der verbleibenden Zeit
+                document.querySelector('.timer').textContent = formattedTime;
+
+            }, 1000); // Aktualisiere alle 1000ms (1 Sekunde)
+        }
+
+        function cancelTimer() {
+            clearInterval(intervalId);
+            setTimer(selectedMin);
+        }
+
+        function stopTimer() {
+            clearInterval(intervalId);
+        }
+
+        function resumeTimer() {
+            startTimer(safeRemainingTime, sound_Single)
+        }
+
+        function short_Timer_Function() {
+            setTimer(5);
+            selectedMin = 5;
+        }
+        
+        function long_Timer_Function() {
+            setTimer(30);
+            selectedMin = 30;
+        }
+        
+        function single_Timer_Function() {
+            setTimer(25);
+            selectedMin = 25;
+        }
+        
+        function session_Timer_Function() {
+            setTimer(25);
+            selectedMin = 25;
+        }
+
+        function start_timer_Function() {
+            setTimer(0);
+            selectedMin = 0;
+        }
+        
+        function setTimer(minutes) {
+            var timerElement = document.querySelector('.timer');
+            var minutesString = ('0' + minutes).slice(-2); // Formatierung auf zwei Stellen
+            timerElement.textContent = minutesString + ":00";
+        }
+        
+        function toggleButton() {
+
+            var startButton = document.getElementById("startButton");
+            var stopButton = document.getElementById("stopButton"); 
+            var resetButton = document.getElementById("resetButton");
+            var resumeButton = document.getElementById("resumeButton");
+
+            if(startButton.innerHTML ==="Start") {
+                startTimer(selectedMin, sound_Single);
+                startButton.style.display="none";
+                stopButton.style.display="inline-block";
+                resetButton.style.display="inline-block";
+                resumeButton.style.display="none";
+            }
+        }
+
+        function stopFunction() {
+
+            var startButton = document.getElementById("startButton");
+            var stopButton = document.getElementById("stopButton"); 
+            var resetButton = document.getElementById("resetButton");
+            var resumeButton = document.getElementById("resumeButton");
+
+            if(stopButton.innerHTML ==="Stop") {
+                stopTimer();
+                startButton.style.display="none";
+                stopButton.style.display="none";
+                resetButton.style.display="inline-block";
+                resumeButton.style.display="inline-block";
+            }
+        }
+        function resetFunction() {
+
+            var startButton = document.getElementById("startButton");
+            var stopButton = document.getElementById("stopButton"); 
+            var resetButton = document.getElementById("resetButton");
+            var resumeButton = document.getElementById("resumeButton");
+
+            if(resetButton.innerHTML ==="Reset") {
+                cancelTimer();
+                startButton.style.display="inline-block";
+                stopButton.style.display="none";
+                resetButton.style.display="none";
+                resumeButton.style.display="none";
+            }
+        }
+
+        function resumeFunction() {
+
+            var startButton = document.getElementById("startButton");
+            var stopButton = document.getElementById("stopButton"); 
+            var resetButton = document.getElementById("resetButton");
+            var resumeButton = document.getElementById("resumeButton");
+
+            if(resumeButton.innerHTML ==="Resume") {
+                resumeTimer();
+                startButton.style.display="none";
+                stopButton.style.display="inline-block";
+                resetButton.style.display="inline-block";
+                resumeButton.style.display="none";
+            }
+        }
+
+        function startSessionFunction() {
+
+            var startButton = document.getElementById("startButton");
+            var stopButton = document.getElementById("stopButton"); 
+            var resetButton = document.getElementById("resetButton");
+            var resumeButton = document.getElementById("resumeButton");
+            var startSessionButton = document.getElementById("startSessionButton");
+
+            if(startSessionButton.innerHTML ==="Start Session") {
+                startButton.style.display="none";
+                stopButton.style.display="inline-block";
+                resetButton.style.display="inline-block";
+                resumeButton.style.display="none";
+                startSessionButton.style.display="none";
+                
+            var timers = [
+                { duration: 25, sound: sound_Single },    // Arbeit für 25 Minuten
+                { duration: 5, sound: sound_Short },      // Kurze Pause für 5 Minuten
+                { duration: 25, sound: sound_Single },    // Arbeit für 25 Minuten
+                { duration: 5, sound: sound_Short },      // Kurze Pause für 5 Minuten
+                { duration: 25, sound: sound_Single },    // Arbeit für 25 Minuten
+                { duration: 5, sound: sound_Short },      // Kurze Pause für 5 Minuten
+                { duration: 25, sound: sound_Single },    // Arbeit für 25 Minuten
+                { duration: 30, sound: sound_Long }       // Lange Pause für 30 Minuten
+            ];
+        
+            // Funktion zum Starten eines Timers
+            function startNextTimer(index) {
+                if (index < timers.length) {
+                    var timer = timers[index];
+                    startTimer(timer.duration, timer.sound);
+                    setTimeout(function () {
+                        startNextTimer(index + 1); // Starte den nächsten Timer nach Ablauf der aktuellen Dauer
+                    }, timer.duration * 60 * 1000); // Wartezeit in Millisekunden
+                }
+            }
+        
+            // Starte die Schleife mit dem ersten Timer
+            startNextTimer(0);
+
+            }
+        }
+        
+        function homeFunction() {
+
+            var homeButton = document.getElementById("homeButton");
+            var workButton = document.getElementById("workButton");
+            var breakButton = document.getElementById("breakButton"); 
+            var singleButton = document.getElementById("singleButton");
+            var sessionButton = document.getElementById("sessionButton");
+            var shortButton = document.getElementById("shortButton");
+            var longButton = document.getElementById("longButton");
+            var startSessionButton = document.getElementById("startSessionButton");
+
+            if(homeButton.innerHTML ==="Home") {
+                start_timer_Function();
+                cancelTimer();
+                homeButton.style.display="inline-block";
+                homeButton.style.backgroundColor = "red";
+                workButton.style.display="inline-block";
+                breakButton.style.display="inline-block";
+                singleButton.style.display="none";
+                singleButton.style.backgroundColor = "black";
+                sessionButton.style.display="none";
+                sessionButton.style.backgroundColor = "black";
+                shortButton.style.display="none";
+                shortButton.style.backgroundColor = "black";
+                longButton.style.display="none";
+                longButton.style.backgroundColor = "black";
+                startButton.style.display="inline-block";
+                stopButton.style.display="none";
+                resetButton.style.display="none";
+                resumeButton.style.display="none";
+                startSessionButton.style.display="none";
+            }
+        }
+
+        function workFunction() {
+
+            var homeButton = document.getElementById("homeButton");
+            var workButton = document.getElementById("workButton");
+            var breakButton = document.getElementById("breakButton"); 
+            var singleButton = document.getElementById("singleButton");
+            var sessionButton = document.getElementById("sessionButton");
+            var shortButton = document.getElementById("shortButton");
+            var longButton = document.getElementById("longButton");
+
+            if(workButton.innerHTML ==="Focus") {
+                start_timer_Function();
+                homeButton.style.display="inline-block";
+                homeButton.style.backgroundColor = "black";
+                workButton.style.display="none";
+                breakButton.style.display="none";
+                singleButton.style.display="inline-block";
+                sessionButton.style.display="inline-block";
+                shortButton.style.display="none";
+                longButton.style.display="none";
+            }
+        }
+
+        function breakFunction() {
+
+            var homeButton = document.getElementById("homeButton");
+            var workButton = document.getElementById("workButton");
+            var breakButton = document.getElementById("breakButton"); 
+            var singleButton = document.getElementById("singleButton");
+            var sessionButton = document.getElementById("sessionButton");
+            var shortButton = document.getElementById("shortButton");
+            var longButton = document.getElementById("longButton");
+
+            if(breakButton.innerHTML ==="Break") {
+                start_timer_Function();
+                homeButton.style.display="inline-block";
+                homeButton.style.backgroundColor = "black";
+                workButton.style.display="none";
+                breakButton.style.display="None";
+                singleButton.style.display="none";
+                sessionButton.style.display="none";
+                shortButton.style.display="inline-block";
+                longButton.style.display="inline-block";
+            }
+        }
+
+        function singleFunction() {
+
+            var homeButton = document.getElementById("homeButton");
+            var workButton = document.getElementById("workButton");
+            var breakButton = document.getElementById("breakButton"); 
+            var singleButton = document.getElementById("singleButton");
+            var sessionButton = document.getElementById("sessionButton");
+            var shortButton = document.getElementById("shortButton");
+            var longButton = document.getElementById("longButton");
+            var startSessionButton = document.getElementById("startSessionButton");
+            var startButton = document.getElementById("startButton");
+            var stopButton = document.getElementById("stopButton");
+            var resetButton = document.getElementById("resetButton");
+            var resumeButton = document.getElementById("resumeButton");
+
+
+            if(singleButton.innerHTML ==="Single") {
+                cancelTimer();
+                single_Timer_Function();
+                homeButton.style.display="inline-block";
+                workButton.style.display="none";
+                breakButton.style.display="none";
+                singleButton.style.display="inline-block";
+                singleButton.style.backgroundColor = "red";
+                sessionButton.style.display="inline-block";
+                sessionButton.style.backgroundColor = "black";
+                shortButton.style.display="none";
+                longButton.style.display="none";
+                startSessionButton.style.display="none";
+                startButton.style.display="inline-block";
+                stopButton.style.display="none";
+                resetButton.style.display="none";
+                resumeButton.style.display="none";
+            }
+        }
+
+        function sessionFunction() {
+
+            var homeButton = document.getElementById("homeButton");
+            var workButton = document.getElementById("workButton");
+            var breakButton = document.getElementById("breakButton"); 
+            var singleButton = document.getElementById("singleButton");
+            var sessionButton = document.getElementById("sessionButton");
+            var shortButton = document.getElementById("shortButton");
+            var longButton = document.getElementById("longButton");
+            var startSessionButton = document.getElementById("startSessionButton");
+            var startButton = document.getElementById("startButton");
+            var stopButton = document.getElementById("stopButton");
+            var resetButton = document.getElementById("resetButton");
+            var resumeButton = document.getElementById("resumeButton");
+
+
+            if(sessionButton.innerHTML ==="Session") {
+                cancelTimer();
+                session_Timer_Function();
+                homeButton.style.display="inline-block";
+                workButton.style.display="none";
+                breakButton.style.display="none";
+                singleButton.style.display="inline-block";
+                singleButton.style.backgroundColor = "black";
+                sessionButton.style.display="inline-block";
+                sessionButton.style.backgroundColor = "red";
+                shortButton.style.display="none";
+                longButton.style.display="none";
+                startSessionButton.style.display="inline-block";
+                startButton.style.display="none";
+                stopButton.style.display="none";
+                resetButton.style.display="none";
+                resumeButton.style.display="none";
+                
+            }
+        }
+
+        function shortFunction() {
+
+            var homeButton = document.getElementById("homeButton");
+            var workButton = document.getElementById("workButton");
+            var breakButton = document.getElementById("breakButton"); 
+            var singleButton = document.getElementById("singleButton");
+            var sessionButton = document.getElementById("sessionButton");
+            var shortButton = document.getElementById("shortButton");
+            var longButton = document.getElementById("longButton");
+            var startButton = document.getElementById("startButton");
+            var stopButton = document.getElementById("stopButton");
+            var resetButton = document.getElementById("resetButton");
+            var resumeButton = document.getElementById("resumeButton");
+
+            if(shortButton.innerHTML ==="Short") {
+                cancelTimer();
+                short_Timer_Function();
+                homeButton.style.display="inline-block";
+                workButton.style.display="none";
+                breakButton.style.display="none";
+                singleButton.style.display="none";
+                sessionButton.style.display="none";
+                shortButton.style.display="inline-block";
+                shortButton.style.backgroundColor = "red";
+                longButton.style.display="inline-block";
+                longButton.style.backgroundColor = "black";
+                stopButton.style.display="none";
+                resetButton.style.display="none";
+                startButton.style.display="inline-block";
+                resumeButton.style.display="none";
+            }
+        }
+
+        function longFunction() {
+
+            var homeButton = document.getElementById("homeButton");
+            var workButton = document.getElementById("workButton");
+            var breakButton = document.getElementById("breakButton"); 
+            var singleButton = document.getElementById("singleButton");
+            var sessionButton = document.getElementById("sessionButton");
+            var shortButton = document.getElementById("shortButton");
+            var longButton = document.getElementById("longButton");
+            var startButton = document.getElementById("startButton");
+            var stopButton = document.getElementById("stopButton");
+            var resetButton = document.getElementById("resetButton");
+            var resumeButton = document.getElementById("resumeButton");
+
+            if(longButton.innerHTML ==="Long") {
+                cancelTimer();
+                long_Timer_Function();
+                homeButton.style.display="inline-block";
+                workButton.style.display="none";
+                breakButton.style.display="none";
+                singleButton.style.display="none";
+                sessionButton.style.display="none";
+                shortButton.style.display="inline-block";
+                shortButton.style.backgroundColor = "black";
+                longButton.style.display="inline-block";
+                longButton.style.backgroundColor = "red";
+                stopButton.style.display="none";
+                resetButton.style.display="none";
+                startButton.style.display="inline-block";
+                resumeButton.style.display="none";
+            }
+        }
+
+    </script>
+
+</head>
+<body class="background-dark">
+    <div class="menu-bar center">
+        <div class="menu-item center">
+            <span>🍅 Promodoro Timer </span>
+            <!--<a class="menu-item" href="settings.html">⚙</a>--> 
+        </div>
+    </div>
+
+    <div id ="buttonContainer" class="center marginTop100">
+
+        <button id="homeButton" class="time-button-red" onclick="homeFunction()">Home</button>
+        
+        <button id="workButton" class="time-button" onclick="workFunction()">Focus</button>
+
+        <button id="breakButton" class="time-button"  onclick="breakFunction()">Break</button>
+
+        <button id="singleButton" class="time-button" style="display: none;" onclick="singleFunction()">Single</button>
+
+        <button id="sessionButton" class="time-button" style="display: none;" onclick="sessionFunction()">Session</button>
+        
+        <button id="shortButton" class="time-button" style="display: none;" onclick="shortFunction()">Short</button>
+
+        <button id="longButton" class="time-button" style="display: none;" onclick="longFunction()">Long</button>
+
+    </div>
+        
+    <div class="center marginTop40">
+        <img src="img/tomato.png" width="140">
+    </div>
+
+    <div class="center marginTop40 timer">
+        00:00
+    </div>
+
+    <div id="buttonContainer" class="center marginTop40">
+
+        <button id="startButton" class="control-button" onclick="toggleButton()">Start</button>
+
+        <button id="stopButton" class="control-button" style="display: none;" onclick="stopFunction()">Stop</button>
+
+        <button id="resumeButton" class="control-button" style="display: none;" onclick="resumeFunction()">Resume</button>
+        
+        <button id="resetButton" class="control-button" style="display: none;" onclick="resetFunction()">Reset</button>
+
+        <button id="startSessionButton" class="control-button" style="display: none;" onclick="startSessionFunction()">Start Session</button>
+        
+    </div>
+</body>
+</html>

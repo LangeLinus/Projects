@@ -54,22 +54,22 @@
         }
 
         .marginTop100 {
-            margin-top: 100px;
+            margin-top: 14vh;
         }
 
         .marginTop40 {
-            margin-top: 40px;
+            margin-top: 9vh;
         }
 
         .marginTop10 {
-            margin-top: 10px;
+            margin-top: 2vh;
         }
 
         .timer {
             font-size: 60px;
             color: white;
             font-family: 'Roboto', 'sans-serif';
-            margin-bottom: 20px;
+            margin-bottom: 2vh;
         }
 
         .menu-bar {
@@ -81,14 +81,14 @@
             color: white;
             font-size: 24px;
             font-family: Arial, sans-serif;
-            margin-bottom: 20px;
+            margin-bottom: 2vh;
             
         }
 
         .menu-item a {
             color: inherit; 
             text-decoration: none; 
-            margin-left: 40px;
+            margin-left: 4vh;
         }
         
     </style>
@@ -101,12 +101,18 @@
         let selectedMin;
         let formattedTime;
         let safeRemainingTime;
+        let isSession = false;
+        let counter = 0;
+        let remainingMin;
+        let remainingSec;
+        let selectedSec;
 
-        function startTimer(min, sound) {
-            let endTime = new Date().getTime() + 1000 * 60 * min;
+        function startTimer(min,sec = 0, sound,) {
+            let endTime = new Date().getTime() + 1000 * (60 * min + sec);
             intervalId = setInterval(function() {
                 let now = new Date().getTime();
                 let remainingtime = endTime-now;
+                let warningTime = 20 * 1000;
             
                 if(remainingtime<=0) {
                     clearInterval(intervalId);
@@ -114,12 +120,16 @@
                     return;
                 }
 
-                let minRemaining = Math.floor(remainingtime / (1000 * 60));
-                let secRemaining = Math.floor((remainingtime % (1000 * 60)) / 1000);
+                if(remainingtime <= warningTime && isSession) {
+                    sound.play();
+                }
 
-                safeRemainingTime = minRemaining + secRemaining/60
+                remainingMin = Math.floor(remainingtime / (1000 * 60));
+                remainingSec = Math.floor((remainingtime % (1000 * 60)) / 1000);
+
+                safeRemainingTime = remainingMin + remainingSec/60
                 // Formatieren die verbleibende Zeit in ein MM:SS-Format
-                formattedTime = ('0' + minRemaining).slice(-2) + ':' + ('0' + secRemaining).slice(-2);
+                formattedTime = ('0' + remainingMin).slice(-2) + ':' + ('0' + remainingSec).slice(-2);
                 
                 // Aktualisiere das Timer-Element mit der verbleibenden Zeit
                 document.querySelector('.timer').textContent = formattedTime;
@@ -129,7 +139,9 @@
 
         function cancelTimer() {
             clearInterval(intervalId);
-            setTimer(selectedMin);
+            setTimer(selectedMin, selectedSec);
+            remainingMin = 0;
+            remainingSec = 0;
         }
 
         function stopTimer() {
@@ -137,27 +149,31 @@
         }
 
         function resumeTimer() {
-            startTimer(safeRemainingTime, sound_Single)
+            startTimer(remainingMin, remainingSec, sound_Single)
         }
 
         function short_Timer_Function() {
             setTimer(5);
             selectedMin = 5;
+            selectedSec = 0;
         }
         
         function long_Timer_Function() {
             setTimer(30);
             selectedMin = 30;
+            selectedSec = 0;
         }
         
         function single_Timer_Function() {
             setTimer(25);
             selectedMin = 25;
+            selectedSec = 0;
         }
         
         function session_Timer_Function() {
-            setTimer(25);
+            setTimer(25, 20);
             selectedMin = 25;
+            selectedSec = 20;
         }
 
         function start_timer_Function() {
@@ -165,10 +181,11 @@
             selectedMin = 0;
         }
         
-        function setTimer(minutes) {
+        function setTimer(min, sec = 0) {
             var timerElement = document.querySelector('.timer');
-            var minutesString = ('0' + minutes).slice(-2); // Formatierung auf zwei Stellen
-            timerElement.textContent = minutesString + ":00";
+            var minString = ('0' + min).slice(-2); // Formatierung auf zwei Stellen
+            var secString = ('0' + sec).slice(-2);
+            timerElement.textContent = minString + ":" + secString;
         }
         
         function toggleButton() {
@@ -179,7 +196,7 @@
             var resumeButton = document.getElementById("resumeButton");
 
             if(startButton.innerHTML ==="Start") {
-                startTimer(selectedMin, sound_Single);
+                startTimer(selectedMin, selectedSec, sound_Single);
                 startButton.style.display="none";
                 stopButton.style.display="inline-block";
                 resetButton.style.display="inline-block";
@@ -210,11 +227,25 @@
             var resumeButton = document.getElementById("resumeButton");
 
             if(resetButton.innerHTML ==="Reset") {
+                stopTimer();
                 cancelTimer();
                 startButton.style.display="inline-block";
                 stopButton.style.display="none";
                 resetButton.style.display="none";
                 resumeButton.style.display="none";
+
+                if (isSession) {
+                    setTimer(25, 20);
+                    selectedMin = 25;
+                    selectedSec = 20;
+                    isSession = false;
+                }
+                else {
+                    setTimer(selectedMin, selectedSec);
+                }
+                    
+                clearTimeout(sessionTimeout);
+                sessionInProgress = false;
             }
         }
 
@@ -248,29 +279,41 @@
                 resetButton.style.display="inline-block";
                 resumeButton.style.display="none";
                 startSessionButton.style.display="none";
+
+            isSession = true;
                 
             var timers = [
-                { duration: 25, sound: sound_Single },    // Arbeit für 25 Minuten
-                { duration: 5, sound: sound_Short },      // Kurze Pause für 5 Minuten
-                { duration: 25, sound: sound_Single },    // Arbeit für 25 Minuten
-                { duration: 5, sound: sound_Short },      // Kurze Pause für 5 Minuten
-                { duration: 25, sound: sound_Single },    // Arbeit für 25 Minuten
-                { duration: 5, sound: sound_Short },      // Kurze Pause für 5 Minuten
-                { duration: 25, sound: sound_Single },    // Arbeit für 25 Minuten
-                { duration: 30, sound: sound_Long }       // Lange Pause für 30 Minuten
+                { min: 25, sec: 20,  sound: sound_Single },    // Arbeit für 25 Minuten
+                { min: 5, sec: 20, sound: sound_Short },      // Kurze Pause für 5 Minuten
+                { min: 25, sec: 20, sound: sound_Single },    // Arbeit für 25 Minuten
+                { min: 5, sec: 20, sound: sound_Short },      // Kurze Pause für 5 Minuten
+                { min: 25, sec: 20, sound: sound_Single },    // Arbeit für 25 Minuten
+                { min: 5, sec: 20, sound: sound_Short },      // Kurze Pause für 5 Minuten
+                { min: 25, sec: 20, sound: sound_Single },    // Arbeit für 25 Minuten
+                { min: 30, sec: 0, sound: sound_Long }       // Lange Pause für 30 Minuten
             ];
         
             // Funktion zum Starten eines Timers
             function startNextTimer(index) {
-                if (index < timers.length) {
+                if (index < timers.length && sessionInProgress) {
+
+                    // Kurze ZÄhlvariable um bei der letzten Pause nicht 
+                    // doppelt zu klingeln 
+                    counter++;
+                    if (counter == 7){
+                        isSession = false;
+                        counter == 0;
+                    }
+
                     var timer = timers[index];
-                    startTimer(timer.duration, timer.sound);
-                    setTimeout(function () {
+                    startTimer(timer.min, timer.sec, timer.sound);
+                    sessionTimeout= setTimeout(function () {
                         startNextTimer(index + 1); // Starte den nächsten Timer nach Ablauf der aktuellen Dauer
-                    }, timer.duration * 60 * 1000); // Wartezeit in Millisekunden
+                    }, timer.min * 60 * 1000); // Wartezeit in Millisekunden
                 }
             }
-        
+            
+            sessionInProgress = true;
             // Starte die Schleife mit dem ersten Timer
             startNextTimer(0);
 
@@ -290,6 +333,7 @@
 
             if(homeButton.innerHTML ==="Home") {
                 start_timer_Function();
+                stopTimer();
                 cancelTimer();
                 homeButton.style.display="inline-block";
                 homeButton.style.backgroundColor = "red";
@@ -308,6 +352,8 @@
                 resetButton.style.display="none";
                 resumeButton.style.display="none";
                 startSessionButton.style.display="none";
+                clearTimeout(sessionTimeout);
+                sessionInProgress = false;
             }
         }
 
@@ -374,6 +420,7 @@
 
 
             if(singleButton.innerHTML ==="Single") {
+                stopTimer();
                 cancelTimer();
                 single_Timer_Function();
                 homeButton.style.display="inline-block";
@@ -390,6 +437,8 @@
                 stopButton.style.display="none";
                 resetButton.style.display="none";
                 resumeButton.style.display="none";
+                clearTimeout(sessionTimeout);
+                sessionInProgress = false;
             }
         }
 
@@ -503,7 +552,7 @@
     <div class="menu-bar center">
         <div class="menu-item center">
             <span>🍅 Promodoro Timer </span>
-            <!--<a class="menu-item" href="settings.html">⚙</a>--> 
+            <a class="menu-item" href="settings.html">⚙</a>
         </div>
     </div>
 
@@ -526,7 +575,7 @@
     </div>
         
     <div class="center marginTop40">
-        <img src="img/tomato.png" width="140">
+        <img src="img/tomato.png" width="150" height="auto">
     </div>
 
     <div class="center marginTop40 timer">
@@ -546,5 +595,10 @@
         <button id="startSessionButton" class="control-button" style="display: none;" onclick="startSessionFunction()">Start Session</button>
         
     </div>
+
+    <!--Todo: Button für Info einfügen-->
+    <!--Home Menü lieber rausnehmen-->
+    <!--Chose Mode einfügen und Reset und Finsh verwenden-->
+
 </body>
 </html>

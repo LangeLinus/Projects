@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <!-- Einbinden der style.css Datei für Design der App -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Einbinden der script.js Datei für die Funktionsweise der App -->
+    <script src="script.js"></script>
+    <!-- Verknüpfung mit der Google Schriftartvorlagen -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <main>
+        <!-- Erstellen der Anzeige des Rechners mit der Style-ID resultArea und leerer Eingabe zum Start -->
+        <div id="resultArea">
+            
+        </div>
+
+        <!-- Inhaltlich neuer Bereich für das Eingabefeld des Rechners -->
+        <section>
+            <!-- Tabelle für das Eingabefeld des Rechners erstellen -->
+            <table>
+                <!-- Oberste Tabellezeile erstellen -->
+                <tr>
+                    <!-- Jeweiliges Spaltenelement der obersten Tabellenzeile erstellen -->
+                    <td onclick="addCharacter('(')" class="highlight">(</td>
+                    <td onclick="addCharacter(')')"  class="highlight">)</td>
+                    <td onclick="deleteAll()" class="highlight">C</td>
+                    <td onclick="deleteLast()" class="highlight">⌫</td>
+                </tr>
+                <!-- Zweite Tabellenzeile erstellen -->
+                <tr>
+                    <!-- Jeweiliges Spaltenelement der zweiten Tabellenzeile erstellen -->
+                    <td  onclick="addCharacter('+')"  class="highlight">+</td>
+                    <td onclick="addCharacter('1')" >1</td>
+                    <td onclick="addCharacter('2')" >2</td>
+                    <td onclick="addCharacter('3')" >3</td>
+                </tr>
+                <!-- Dritte Tabellenzeile erstellen -->
+                <tr>
+                    <!-- Jeweiliges Spaltenelement der dritten Tabellenzeile erstellen -->
+                    <td onclick="addCharacter('-')"  class="highlight">-</td>
+                    <td onclick="addCharacter('4')" >4</td>
+                    <td onclick="addCharacter('5')" >5</td>
+                    <td onclick="addCharacter('6')" >6</td>
+                </tr>
+                <!-- Vierte Tabellenzeile erstellen -->
+                <tr>
+                    <!-- Jeweiliges Spaltenelement der vierten Tabellenzeile erstellen -->
+                    <td onclick="addCharacter('*')"  class="highlight">*</td>
+                    <td onclick="addCharacter('7')" >7</td>
+                    <td onclick="addCharacter('8')" >8</td>
+                    <td onclick="addCharacter('9')" >9</td>
+                </tr>
+                <!-- Letzte Tabellenzeile erstellen -->
+                <tr>
+                    <!-- Jeweiliges Spaltenelement der letzten Tabellenzeile erstellen -->
+                    <td onclick="addCharacter('/')"  class="highlight">/</td>
+                    <td onclick="addCharacter('.')" >,</td>
+                    <td onclick="addCharacter('0')" >0</td>
+                    <td onclick="solveCharacters()"  id="solve">=</td>
+                </tr>
+            </table>
+        </section>
+    </main>
+</body>
+</html>

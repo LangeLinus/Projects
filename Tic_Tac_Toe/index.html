@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic_Tac_Toe</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script> 
+    <!-- Verknüpfung mit der Google Schriftartvorlagen -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <!-- Header der App -->
+        <section>
+            Tic Tac Toe
+        </section>
+    </header>
+    <main>
+        <section id="scoreBoardArea">
+            <!-- Scoreboard zum Mitzählen des Punktestandes -->
+            <table id="scoreBoardTable">
+                <!-- ID's jeweils um den Punktstand zu aktualisieren -->
+                <tr>
+                    <td id="cellPlayero" class="tdScoreBoard">Player o</td>
+                    <td id="cellPlayerx" class="tdScoreBoard">Player x</td>
+                </tr>
+                <tr>
+                    <td id="cellPlayeroPoints" class="tdScoreBoard">0</td>
+                    <td id="cellPlayerxPoints" class="tdScoreBoard">0</td>
+                </tr>
+            </table>
+        </section>
+        <section>
+            <!-- Eigentliches Spielfeld -->
+            <table id="playAreaTable">
+                <tr>
+                    <td id="cell1" onclick="addCharacter('cell1')"></td>
+                    <td id="cell2" onclick="addCharacter('cell2')"></td>
+                    <td id="cell3" onclick="addCharacter('cell3')"></td>
+                </tr>
+                <tr>
+                    <td id="cell4" onclick="addCharacter('cell4')"></td>
+                    <td id="cell5" onclick="addCharacter('cell5')"></td>
+                    <td id="cell6" onclick="addCharacter('cell6')"></td>
+                </tr>
+                <tr>
+                    <td id="cell7" onclick="addCharacter('cell7')"></td>
+                    <td id="cell8" onclick="addCharacter('cell8')"></td>
+                    <td id="cell9" onclick="addCharacter('cell9')"></td>
+                </tr>
+            </table>
+        </section>
+        <!-- Bereich für den Start und Restart Button -->
+        <section id="controlButtonArea">
+            <button id="startButton" onclick="startFunction()" class="controlButton">Start</button>  
+            <button id="newstartButton" onclick="newstartFunction()" style="display: none;" class="controlButton">Newstart</button>  
+        </section>
+    </main>
+    <!-- Zum Mitzählen welches Game gerade ist -->
+    <footer id="whichGame">
+        Game 1
+    </footer>
+</body>
+</html>

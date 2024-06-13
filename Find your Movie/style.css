@@ -1,0 +1,158 @@
+* {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#search-input {
+  width: 65%;
+  align-content: center;
+  margin: 60px 0 0 0;
+  height: 5vh;
+  background-color: rgb(20, 20, 20);
+  color: white;
+  font-size: 20px;
+  border: none;
+}
+
+#search-input::placeholder {
+  color: white;
+}
+
+#resultArea {
+  height: 70vh;
+  background-color: black;
+  color: white;
+}
+
+.result {
+  margin-top: 1vh;
+  max-height: 55vh; /* Begrenze die maximale Höhe des Containers */
+  overflow-y: scroll; /* Ermögliche vertikales Scrollen */
+  width: 100%;
+}
+
+#searchButton {
+  height: 5vh;
+  background-color: rgb(20, 20, 20);
+  color: white;
+  font-size: 20px;
+  border: none;
+}
+
+#search {
+  background-color: black;
+  color: white;
+  height: 70vh;
+  text-align: center;
+}
+
+.firstP {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+#search h1 {
+  font-size: 28px;
+}
+
+#search p {
+  font-size: 20px;
+}
+
+.box {
+  color: white;
+  margin: 40px 25px 0 25px;
+  padding: 10px;
+  border-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: rgb(177, 27, 27);
+}
+
+.box ul {
+  list-style-type: none;
+}
+
+header {
+  text-align: center;
+  color: white;
+  background-color: black;
+  height: 10vh;
+  align-content: center;
+}
+
+header h1 {
+  padding: 10px;
+  background: rgb(177, 27, 27);
+  margin: 0px 25px 0 25px;
+  border-radius: 10px;
+}
+
+footer {
+  height:20vh;
+  color: white;
+  background-color: black;
+  text-align: left;
+  align-content: flex-start;
+  font-size: 18px;
+}
+
+#tableStreamingOptions {
+  margin-top: 5px;
+  width: 100%;
+  background-color: white;
+  text-align: left;
+}
+
+td {
+  font-size: 18px;
+  text-align: center;
+  background-color: rgb(177, 27, 27);
+  text-align: left;
+}
+
+th {
+  font-size: 20px;
+  background-color: rgb(177, 27, 27);
+}
+
+#streamingOptions, #overview {
+  margin-top: 20px;
+  text-align: left;
+  align-items: end;
+}
+
+#overview {
+  display: block;
+}
+
+#footerChatGpt {
+  width: 88%;
+  background-color: rgb(20, 20, 20);
+  color: white;
+  margin: 25px auto;
+  padding: 10px;
+  border-color: white;
+  border-radius: 10px;
+}
+
+#similarMovies {
+  margin-bottom: 5px;
+  font-size: 20px;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  margin-top: 5px; 
+  word-wrap: break-word; 
+} 
+
+

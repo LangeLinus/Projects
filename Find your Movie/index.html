@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Find your Movie</title>
+    <link
+      href="style.css"
+      rel="stylesheet"
+    />
+    <script
+      src="app.js"
+      defer
+    ></script>
+    <script
+      src = "chatkram.js"
+      defer
+      ></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header>
+      <section>
+        <h1>Find your Movie
+        </h1>
+      </section>
+    </header>
+    <section id="search">
+      <section>
+        <input
+          id="search-input"
+          placeholder="Search here for ..."
+        />
+        <button
+          id="searchButton"
+          type="submit"
+        >
+          Search
+        </button>
+      </section>
+      <div class="result">
+      </div>
+    </section>
+    <footer>
+      <div id="footerChatGpt">
+        <div id="similarMovies">
+          <p><strong>Similar movies</strong> according to Chat GPT:</p>
+        </div>
+        <div id="ansChatGpt">
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
